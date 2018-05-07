@@ -1,8 +1,0 @@
-[
-  "handler_test.py::test_setBotname",
-  "handler_test.py::test_setMessages",
-  "handler_test.py::test_botname_right_message",
-  "handler_test.py::test_botname_wrong_message",
-  "splitter_test.py::test_compactPriorities",
-  "splitter_test.py::test_SplitByPriorities"
-]
