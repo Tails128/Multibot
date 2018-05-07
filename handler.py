@@ -14,7 +14,6 @@ class Handler():
     #       for candidateMessage in messageList:
     # TODO
 
-    # simple setter for botname.
     def setBotname(self, newName):
         """Set the internal variable which stores the bot's name."""
         self.botname = newName
