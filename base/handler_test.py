@@ -1,10 +1,10 @@
 """Test handler class."""
-from handler import Handler
+from base import handler
 
 
 def test_setBotname():
     """Test the setBotname function."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     bName = "Test"
     testHandler.setBotname(bName)
     assert(testHandler.botname == bName)
@@ -12,16 +12,16 @@ def test_setBotname():
 
 def test_setMessages():
     """Test the setMessages function."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     messages = [[{'trigger': '/botname'}]]
     testHandler.setMessages(messages)
     assert testHandler.messages == messages
-    assert testHandler.helpCommand.getHelpCommand() == "*botname*\n\n"
+    assert testHandler.handlerHelpCommand.getHelpCommand() == "*botname*\n\n"
 
 
 def test_botname_right_message():
     """Test the reaction of the bot once a matching message is sent."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname'}]]
     testHandler.setBotname(bName)
@@ -35,7 +35,7 @@ def test_botname_right_message():
 
 def test_botname_right_message_get_answer():
     """Test the answer to a right message."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
     testHandler.setBotname(bName)
@@ -46,7 +46,7 @@ def test_botname_right_message_get_answer():
 
 def test_botname_wrong_message():
     """Test the reaction of the bot once a NOT matching message is sent."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname'}]]
     testHandler.setBotname(bName)
@@ -60,7 +60,7 @@ def test_botname_wrong_message():
 
 def test_botname_wrong_message_get_answer():
     """Test the answer to a wrong message."""
-    testHandler = Handler()
+    testHandler = handler.Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
     testHandler.setBotname(bName)

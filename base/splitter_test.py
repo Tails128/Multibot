@@ -1,10 +1,10 @@
 """Test splitter class."""
-from splitter import Splitter
+from base import splitter
 
 
 def test_sortPriorities():
     """Test the sortPriorities function."""
-    testSplitter = Splitter()
+    testSplitter = splitter.Splitter()
     values = {}
     values[3] = [{'priority': 3}]
     values[2] = [{'priority': 2}, {'priority': 2}]
@@ -21,7 +21,7 @@ def test_sortPriorities():
 
 def test_SplitByPriorities():
     """Test the splitByPriorities function."""
-    testSplitter = Splitter()
+    testSplitter = splitter.Splitter()
     values = []
     values.append({'priority': 3})
     values.append({'priority': 2})
