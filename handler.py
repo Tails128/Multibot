@@ -1,5 +1,7 @@
 """This document contains the class which handles telegram's interactions."""
 from helpCommand import HelpCommand
+import random
+import math
 
 
 class Handler():
@@ -8,13 +10,6 @@ class Handler():
     messages = []
     botname = ''
     helpCommand = ''
-
-    # this function collapses the config data into the property 'trigger' to
-    # save time when the bot has to check if messages match
-    # def riComposeTrigger():
-    #   for messageList in messages:
-    #       for candidateMessage in messageList:
-    # TODO
 
     def setBotname(self, newName):
         """Set the internal variable which stores the bot's name."""
@@ -60,14 +55,28 @@ class Handler():
         # default return false
         return False
 
-    def answer(self, answer):
+    def answer(self, answer, sender):
         """Answer to a matching command."""
-        print("MATCH!")
+        answers = answer.get('answer')
+        if len(answers) is 1:
+            return answers[0]
+        number = math.floor(random.random() * len())
+        return answers[number]
 
-    def checkMessage(self, message):
+    def checkMessage(self, message, sender):
         """Check if the message just sent is a command."""
         for messageList in self.messages:
             for candidateMessage in messageList:
                 if self.matches(candidateMessage, message):
-                    self.answer(candidateMessage)
-                    return
+                    return self.answer(candidateMessage, sender)
+        return None
+
+    def handle(self, message, bot):
+        """Handle the chat and check if any command is sent."""
+        chat_id = message['chat']['id']
+        fullMessage = message['text']
+        sender = message['from']['username']
+        # sendHour = message['date']
+        answer = self.checkMessage(fullMessage, sender)
+        if answer is not None:
+            bot.sendMessage(chat_id, answer)
