@@ -10,7 +10,8 @@ class Splitter():
 
         sortedPriorities = sorted(values)
         for key in sortedPriorities:
-            result.append(values[key])
+            sanitizedValues = self.sanitize(values[key])
+            result.append(sanitizedValues)
 
         return result
 
@@ -28,6 +29,18 @@ class Splitter():
             holder[priority].append(arrItem)
 
         return self.sortPriorities(holder)
+
+    def sanitize(self, array):
+        """Sanitize the entries."""
+        result = []
+        for item in array:
+            if 'answer' not in item:
+                item['answer'] = []
+            elif type(item.get('answer')) is str:
+                arr = [item.get('answer')]
+                item['answer'] = arr
+            result.append(item)
+        return result
 
 # def describeCommands(values):
 # TODO:

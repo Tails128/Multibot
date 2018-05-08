@@ -12,8 +12,11 @@ def test_sortPriorities():
     values[1] = [{'priority': 1}]
 
     result = testSplitter.sortPriorities(values)
-    assert result == [[{'priority': 1}], [{'priority': 2}, {'priority': 2}],
-                      [{'priority': 3}], [{'priority': 6}]]
+    assert result == [[{'priority': 1, 'answer': []}],
+                      [{'priority': 2, 'answer': []},
+                       {'priority': 2, 'answer': []}],
+                      [{'priority': 3, 'answer': []}],
+                      [{'priority': 6, 'answer': []}]]
 
 
 def test_SplitByPriorities():
@@ -27,5 +30,8 @@ def test_SplitByPriorities():
     values.append({'priority': 2})
 
     result = testSplitter.splitByPriority(values)
-    assert result == [[{'priority': 1}], [{'priority': 2}, {'priority': 2}],
-                      [{'priority': 3}], [{'priority': 6}]]
+    assert result == [[{'priority': 1, 'answer': []}],
+                      [{'priority': 2, 'answer': []},
+                       {'priority': 2, 'answer': []}],
+                      [{'priority': 3, 'answer': []}],
+                      [{'priority': 6, 'answer': []}]]
