@@ -22,12 +22,12 @@ messageHandler = handler.Handler()
 messageHandler.setMessages(config)
 
 # define bot and handle the message loop via handler.handle
-# bot = telepot.Bot(os.environ['TELEGRAM_MULTIBOT_KEY'])
-# bot.message_loop(Handler.handle)
+bot = telepot.Bot(os.environ['TELEGRAM_MULTIBOT_KEY'])
+bot.message_loop(messageHandler.handle)
 
 # a simple confermation in case the user wants a feedback over the bot starting
-# print(bot_name + ' successfully started!')
+print(bot_name + ' successfully started!')
 
 # loop to catch all the messages
-# while 1:
-    # time.sleep(10)
+while 1:
+    time.sleep(10)
