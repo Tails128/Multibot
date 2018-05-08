@@ -20,3 +20,14 @@ def test_cleanCommands():
     testHelpCommand.registerCommands(commands)
     testHelpCommand.cleanCommands()
     assert testHelpCommand.commands == []
+
+
+def test_getHelpCommand():
+    """Test the test_getHelpCommand function."""
+    commands = [[{"trigger": "/test",
+                 "command_description": "the test works!"}]]
+    testHelpCommand = HelpCommand()
+    print(testHelpCommand.commands)
+    testHelpCommand.registerCommands(commands)
+    helpCommand = testHelpCommand.getHelpCommand()
+    assert helpCommand == "*test*\nthe test works!\n\n"

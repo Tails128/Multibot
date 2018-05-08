@@ -1,4 +1,4 @@
-
+[
   {
     "trigger" : "botname",
     "trigger_pre" : "hello",
@@ -22,7 +22,7 @@
     "trigger_extra" : "welcome {command1} by saying [{command2}] ",
     "answer" : "You are welcome, {command1}! {command 2} (command 2 is a string and not a word!)",
     "priority" : 0
-  }
+  },
   {
     "trigger" : "",
     "trigger_extra" : [

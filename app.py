@@ -1,16 +1,18 @@
 """Launch the bot."""
-from splitter import splitter
-# from handler import handler
+import json
+from splitter import Splitter
+from handler import Handler
 
 # getting settings.json
 with open('config.json') as f:
-    config = f
+    config = json.load(f)
 
-    # split commands in arrays ordered by priority
-    config = splitter.splitByPriority(config)
+# split commands in arrays ordered by priority
+splitter = Splitter()
+config = splitter.splitByPriority(config)
 
-
-# TODO: add regular commands to description for [/] function
+handler = Handler()
+handler.setMessages(config)
 
 # TODO: handle message (check if message triggers any command, elaborate,
 # strict matching is assumed to be false)

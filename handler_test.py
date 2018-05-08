@@ -13,9 +13,10 @@ def test_setBotname():
 def test_setMessages():
     """Test the setMessages function."""
     testHandler = Handler()
-    messages = [[{'trigger': 'botname'}]]
+    messages = [[{'trigger': '/botname'}]]
     testHandler.setMessages(messages)
-    assert(testHandler.messages == messages)
+    assert testHandler.messages == messages
+    assert testHandler.helpCommand.getHelpCommand() == "*botname*\n\n"
 
 
 def test_botname_right_message():

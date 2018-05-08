@@ -1,4 +1,5 @@
 """This document contains the class which handles telegram's interactions."""
+from helpCommand import HelpCommand
 
 
 class Handler():
@@ -6,6 +7,7 @@ class Handler():
 
     messages = []
     botname = ''
+    helpCommand = ''
 
     # this function collapses the config data into the property 'trigger' to
     # save time when the bot has to check if messages match
@@ -21,7 +23,9 @@ class Handler():
     def setMessages(self, newMessages):
         """Set the internal variable which stores the interactions."""
         self.messages = newMessages
+        self.helpCommand = HelpCommand()
         # TODO : fill extra fields not set in messages
+        self.helpCommand.registerCommands(self.messages)
 
     def fullMatch(self, candidate, message):
         """Check if the message and the candidate match more deeply."""
