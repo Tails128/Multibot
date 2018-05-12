@@ -1,5 +1,5 @@
 """Test handler class."""
-from base import handler
+from base import handler, matcher
 
 
 def test_setBotname():
@@ -30,7 +30,7 @@ def test_botname_right_message():
 
     for messageList in testHandler.messages:
         for candidateMessage in messageList:
-            assert testHandler.matches(candidateMessage, message)
+            assert matcher.Matcher.matches(candidateMessage, message, bName)
 
 
 def test_botname_right_message_get_answer():
@@ -55,7 +55,8 @@ def test_botname_wrong_message():
 
     for messageList in testHandler.messages:
         for candidateMessage in messageList:
-            assert testHandler.matches(candidateMessage, message) is False
+            assert matcher.Matcher.matches(candidateMessage,
+                                           message, bName) is False
 
 
 def test_parse_user():
