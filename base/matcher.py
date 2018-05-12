@@ -25,11 +25,7 @@ class Matcher():
                 hasPre = False
             else:
                 pre_messages = candidate.get("trigger_pre")
-                for pre_message in pre_messages:
-                    print(pre_message + " | " + preMessage)
-                    hasPre = pre_message in preMessage
-                    if(hasPre):
-                        break
+                hasPre = Matcher.__checkInArray(pre_messages, preMessage)
 
         if not hasPost:
             hasPost = True
@@ -40,13 +36,23 @@ class Matcher():
                 hasPost = False
             else:
                 post_messages = candidate.get("trigger_extra")
-                for post_message in post_messages:
-                    print(post_message + " | " + postMessage)
-                    hasPost = post_message in postMessage
-                    if(hasPost):
-                        break
+                hasPost = Matcher.__checkInArray(post_messages, postMessage)
 
         return hasPre and hasPost
+
+    @staticmethod
+    def __checkInArray(array, string):
+        """Check if string matches one of the pre-post elements in the array.
+
+        Check if the given string matches one of the ones in the array. The
+        match is a loose match and must handle the {tags}.
+        """
+        for element in array:
+            # TODO: a better matching must be made: tags need to be considered.
+            hasPost = element in string
+            if(hasPost):
+                return True
+        return False
 
     @staticmethod
     def matches(candidate, message, botname):
