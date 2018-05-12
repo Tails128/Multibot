@@ -14,7 +14,13 @@ class Matcher():
     def matches(candidate, message, botname):
         """Check if the candidate and the message match (trigger only)."""
         # if trigger = /command, check only if the message contains the command
-        if candidate.get('trigger')[0] == '/':
+
+        # if trigger's empty, delegate to fullMatch
+        if candidate['trigger'] == '':
+            return Matcher.__fullMatch(candidate, message)
+
+        # if trigger's a /command, try to match it
+        elif candidate.get('trigger')[0] == '/':
             splittedCandidate = candidate['trigger'].split(' ')
             if len(splittedCandidate) > 1:
                 return False
@@ -31,10 +37,6 @@ class Matcher():
                 if botname == splitted:
                     return Matcher.__fullMatch(candidate, message)
             return False
-
-        # if trigger's empty, delegate to fullMatch
-        elif candidate['trigger'] == '':
-            return Matcher.__fullMatch(candidate, message)
 
         # default return false
         return False

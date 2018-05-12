@@ -62,3 +62,27 @@ def test_simple_command_not_match():
     candidate = {'trigger': trigger}
     message = trigger + "_this_part_of_the_command"
     assert not (matcher.Matcher.matches(candidate, message, botName))
+
+
+def test_simple_empty_match():
+    """Test the matches function on a '' trigger, without filters.
+
+    The matches function is tested on a '' trigger, without pre or post
+    filters, the message sent is expected to match.
+    """
+    botName = "test"
+    candidate = {'trigger': ''}
+    message = "any input should trigger this."
+    assert (matcher.Matcher.matches(candidate, message, botName))
+
+
+def test_bad_trigger_ignored():
+    """Test the matches function on a not supported trigger.
+
+    The matches function is tested on a not supported trigger (not in: ['',
+    'botname','/command']), the message sent is expected NOT to match.
+    """
+    botName = "test"
+    candidate = {'trigger': 'test'}
+    message = "test"
+    assert not (matcher.Matcher.matches(candidate, message, botName))
