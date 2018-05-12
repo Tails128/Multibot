@@ -7,7 +7,17 @@ class Matcher():
     @staticmethod
     def __fullMatch(candidate, message):
         """Check if the message and the candidate match more deeply."""
-        return True
+        hasPre = "trigger_pre" in candidate
+        if hasPre:
+            hasPre = len(candidate.get("trigger_pre").strip(" "))
+        hasPost = "trigger_extra" in candidate
+        if hasPost:
+            hasPost = len(candidate.get("trigger_extra").strip(" "))
+
+        if not hasPre and not hasPost:
+            return True
+
+        return False
         # TODO
 
     @staticmethod
@@ -26,7 +36,7 @@ class Matcher():
                 return False
             splittedMessage = message.split(' ')
             if splittedMessage[0] == splittedCandidate[0]:
-                return True
+                return Matcher.__fullMatch(candidate, message)
             return False
 
         # if trigger is botname, check if the message contains the botname,
