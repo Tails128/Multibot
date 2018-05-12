@@ -51,7 +51,7 @@ def test_simple_command_match():
     assert (matcher.Matcher.matches(candidate, message, botName))
 
 
-def test_simple_command_match():
+def test_simple_command_not_match():
     """Test the matches function on a /command trigger, with the wrong message.
 
     The matches function is tested on a /command trigger, without pre or post
