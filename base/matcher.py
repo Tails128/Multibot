@@ -16,29 +16,55 @@ class Matcher():
 
         # If message has no pre-trigger conditions confirm the match for
         # pre-trigger conditions.
-        if not hasPre:
-            hasPre = True
-        else:
-            tags = Matcher.__getTags(preMessage)
-            if len(tags) > 0:
-                # TODO
-                hasPre = False
-            else:
-                pre_messages = candidate.get("trigger_pre")
-                hasPre = Matcher.__checkInArray(pre_messages, preMessage)
+        hasPre = Matcher.__evaluatePrePost(preMessage,
+                                           candidate.get("trigger_pre"),
+                                           hasPre)
+        hasPost = Matcher.__evaluatePrePost(postMessage,
+                                            candidate.get("trigger_extra"),
+                                            hasPost)
 
-        if not hasPost:
-            hasPost = True
-        else:
-            tags = Matcher.__getTags(postMessage)
-            if len(tags) > 0:
-                # TODO
-                hasPost = False
-            else:
-                post_messages = candidate.get("trigger_extra")
-                hasPost = Matcher.__checkInArray(post_messages, postMessage)
+        # if not hasPre:
+        #     hasPre = True
+        # else:
+        #     tags = Matcher.__getTags(preMessage)
+        #     if len(tags) > 0:
+        #         # TODO
+        #         hasPre = False
+        #     else:
+        #         pre_messages = candidate.get("trigger_pre")
+        #         hasPre = Matcher.__checkInArray(pre_messages, preMessage)
+
+        # if not hasPost:
+        #     hasPost = True
+        # else:
+        #     tags = Matcher.__getTags(postMessage)
+        #     if len(tags) > 0:
+        #         # TODO
+        #         hasPost = False
+        #     else:
+        #         post_messages = candidate.get("trigger_extra")
+        #         hasPost = Matcher.__checkInArray(post_messages, postMessage)
 
         return hasPre and hasPost
+
+    @staticmethod
+    def __evaluatePrePost(string, array, hasIt):
+        """Check if the pre-post element matches something in the array.
+
+        If hasIt (the given condition) is positive, try to match the given
+        string to one of the elements in the array.
+        """
+        if not hasIt:
+            return True
+        elif array is None:
+            return False
+        else:
+            tags = Matcher.__getTags(string)
+            if len(tags) > 0:
+                # TODO
+                return False
+            else:
+                return Matcher.__checkInArray(array, string)
 
     @staticmethod
     def __checkInArray(array, string):
