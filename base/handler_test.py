@@ -58,6 +58,14 @@ def test_botname_wrong_message():
             assert testHandler.matches(candidateMessage, message) is False
 
 
+def test_parse_user():
+    """Test the if the {user} tag is parsed correctly."""
+    testHandler = handler.Handler()
+    sender = "Tester"
+    answer = testHandler.parse('{user}', sender)
+    assert(answer == sender)
+
+
 def test_botname_wrong_message_get_answer():
     """Test the answer to a wrong message."""
     testHandler = handler.Handler()

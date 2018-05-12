@@ -55,7 +55,7 @@ class Handler():
         # default return false
         return False
 
-    def answer(self, answer, sender):
+    def answer(self, answer):
         """Answer to a matching command."""
         answers = answer.get('answer')
         if len(answers) is 1:
@@ -68,8 +68,15 @@ class Handler():
         for messageList in self.messages:
             for candidateMessage in messageList:
                 if self.matches(candidateMessage, message):
-                    return self.answer(candidateMessage, sender)
+                    answer = self.answer(candidateMessage)
+                    return self.parse(answer, sender)
         return None
+
+    def parse(self, answer, sender):
+        """Parse the message, finding the {} tags."""
+        """Currently only {user} is supported."""
+        answer = answer.replace("{user}", sender)
+        return answer
 
     def handle(self, message, bot):
         """Handle the chat and check if any command is sent."""
