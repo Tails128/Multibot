@@ -1,4 +1,5 @@
 """This class checks if the given message and the given message item match."""
+from base import tagHelper
 
 
 class Matcher():
@@ -23,28 +24,6 @@ class Matcher():
                                             candidate.get("trigger_extra"),
                                             hasPost)
 
-        # if not hasPre:
-        #     hasPre = True
-        # else:
-        #     tags = Matcher.__getTags(preMessage)
-        #     if len(tags) > 0:
-        #         # TODO
-        #         hasPre = False
-        #     else:
-        #         pre_messages = candidate.get("trigger_pre")
-        #         hasPre = Matcher.__checkInArray(pre_messages, preMessage)
-
-        # if not hasPost:
-        #     hasPost = True
-        # else:
-        #     tags = Matcher.__getTags(postMessage)
-        #     if len(tags) > 0:
-        #         # TODO
-        #         hasPost = False
-        #     else:
-        #         post_messages = candidate.get("trigger_extra")
-        #         hasPost = Matcher.__checkInArray(post_messages, postMessage)
-
         return hasPre and hasPost
 
     @staticmethod
@@ -59,12 +38,8 @@ class Matcher():
         elif array is None:
             return False
         else:
-            tags = Matcher.__getTags(string)
-            if len(tags) > 0:
-                # TODO
-                return False
-            else:
-                return Matcher.__checkInArray(array, string)
+            return Matcher.__checkInArray(array, string)
+        return False
 
     @staticmethod
     def __checkInArray(array, string):
@@ -74,10 +49,43 @@ class Matcher():
         match is a loose match and must handle the {tags}.
         """
         for element in array:
-            # TODO: a better matching must be made: tags need to be considered.
-            hasPost = element in string
-            if(hasPost):
+            tags = tagHelper.getTags(element)
+            if len(tags) is 0:
+                if element in string:
+                    return True
+
+            if Matcher.__tagMatch(tags, element, string):
                 return True
+        return False
+
+    @staticmethod
+    def __tagMatch(tags, textWithTags, string):
+        """Check if a tagwise match is possible."""
+        stringChunks = textWithTags
+        cleanString = string
+        for tag in tags:
+            stringChunks = stringChunks.replace(" {" + tag + "}", "{{}}")
+        stringChunks = stringChunks.split("{{}}")
+
+        print(stringChunks)
+
+        print("checking chunks")
+        for stringChunk in stringChunks:
+            if stringChunk not in string:
+                return False
+            else:
+                cleanString = cleanString.replace(stringChunk, "{{}}")
+
+        # adding 2 to the number of tags to ignore text before and after the
+        # sentence
+        total = len(tags) + 2
+        splittedTags = len(cleanString.split("{{}}"))
+
+        for split in cleanString.split(" "):
+            print(split)
+
+        if splittedTags == total:
+            return True
         return False
 
     @staticmethod
@@ -116,17 +124,3 @@ class Matcher():
 
         # default return false
         return False
-
-    @staticmethod
-    def __getTags(string):
-        answer = []
-        tempAnswer = string.split("}")
-        if len(tempAnswer) is 1:
-            return []
-        for candidate in tempAnswer:
-            print(candidate)
-            candidate = candidate[candidate.index("{") + 1:]
-            # TODO also check validity
-            if candidate is not "user":
-                answer.append(candidate)
-        return answer

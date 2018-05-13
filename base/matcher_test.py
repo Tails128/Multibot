@@ -232,3 +232,21 @@ def test_bad_trigger_ignored():
     candidate = {'trigger': 'test'}
     message = "test"
     assert not (matcher.Matcher.matches(candidate, message, botName))
+
+
+def test_matching_with_tags():
+    """Test the matches function on a botname trigger, with tags.
+
+    The matches function is tested on a botname trigger with pre filter and
+    post filter, plus tags. The message sent is expected to match.
+    """
+    pre_message = "Would {you} kindly use a {tag}, "
+    botName = "test"
+    post_message = "?"
+    candidate = {'trigger': 'botname', 'trigger_extra': [post_message],
+                 'trigger_pre': [pre_message]}
+    not_tagged_pre = pre_message.replace("{tag}", "tag")
+    not_tagged_pre = not_tagged_pre.replace("{you}", "thou")
+    message = not_tagged_pre + " noise " + botName
+    message += " noise " + post_message + " noise"
+    assert matcher.Matcher.matches(candidate, message, botName)
