@@ -74,7 +74,7 @@ class Matcher():
                 cleanString = cleanString.replace(stringChunk, "{{}}")
 
         total = len(tags)
-        splittedTags = len(tagHelper.extractTags(string, textWithTags))
+        splittedTags = len(tagHelper.getTagsContent(string, textWithTags))
 
         if splittedTags == total:
             return True

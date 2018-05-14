@@ -1,6 +1,22 @@
 """An helper for tag management."""
 
 
+def isValid(string):
+    """Check if the tag is valid.
+
+    A tag is considered not valid if it contains unescaped '{' or unescaped '}'
+    """
+    if "}" not in string or "{" not in string:
+        return False
+
+    totalOpen = string.count('{')
+    totalClose = string.count('}')
+    answer = totalOpen - totalClose
+    if answer is not 0:
+        return False
+    return True
+
+
 def getTags(string):
     """Get the tags in a string."""
     answer = []
@@ -18,22 +34,6 @@ def getTags(string):
     return answer
 
 
-def isValid(string):
-    """Check if the tag is valid.
-
-    A tag is considered not valid if it contains unescaped '{' or unescaped '}'
-    """
-    if "}" not in string or "{" not in string:
-        return False
-
-    totalOpen = string.count('{')
-    totalClose = string.count('}')
-    answer = totalOpen - totalClose
-    if answer is not 0:
-        return False
-    return True
-
-
 def removeTags(string):
     """Return the given string, but without the tags."""
     answer = string
@@ -44,7 +44,7 @@ def removeTags(string):
     return answer
 
 
-def extractTags(string, stringWithTags):
+def getTagsContent(string, stringWithTags):
     """Extract tags from a string, using stringWithTags for the syntax."""
     partialTags = getTags(stringWithTags)
     if len(partialTags) is 0:
@@ -56,7 +56,7 @@ def extractTags(string, stringWithTags):
 
     extracted = string
     guide = stringWithTags
-    syntax = extractSyntax(stringWithTags, tags)
+    syntax = getSyntax(stringWithTags, tags)
     for element in syntax:
         if element is not '':
             extracted = extracted.replace(element, "{{}}")
@@ -72,7 +72,7 @@ def extractTags(string, stringWithTags):
     return answer
 
 
-def extractSyntax(string, tags):
+def getSyntax(string, tags):
     """Get the syntax of a string once the tags are removed."""
     if len(tags) is 0:
         return string
