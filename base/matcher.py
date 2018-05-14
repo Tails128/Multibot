@@ -67,22 +67,14 @@ class Matcher():
             stringChunks = stringChunks.replace(" {" + tag + "}", "{{}}")
         stringChunks = stringChunks.split("{{}}")
 
-        print(stringChunks)
-
-        print("checking chunks")
         for stringChunk in stringChunks:
             if stringChunk not in string:
                 return False
             else:
                 cleanString = cleanString.replace(stringChunk, "{{}}")
 
-        # adding 2 to the number of tags to ignore text before and after the
-        # sentence
-        total = len(tags) + 2
-        splittedTags = len(cleanString.split("{{}}"))
-
-        for split in cleanString.split(" "):
-            print(split)
+        total = len(tags)
+        splittedTags = len(tagHelper.extractTags(string, textWithTags))
 
         if splittedTags == total:
             return True
