@@ -59,12 +59,19 @@ def test_botname_wrong_message():
                                            message, bName) is False
 
 
-def test_parse_user():
-    """Test the if the {user} tag is parsed correctly."""
+def test_parse():
+    """Test the if the parse works as intended, replacing tags."""
     testHandler = handler.Handler()
     sender = "Tester"
-    answer = testHandler.parse('{user}', sender)
-    assert(answer == sender)
+    answer = 'hello, {user}! You tagged: {tag}'
+    message = "yourself"
+    messageTemplate = "{tag}"
+    sender = "tester"
+    result = "hello, tester! You tagged: yourself"
+
+    answer = testHandler.parse(answer, messageTemplate, message, sender)
+
+    assert(result == answer)
 
 
 def test_botname_wrong_message_get_answer():

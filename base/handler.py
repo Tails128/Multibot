@@ -1,5 +1,5 @@
 """This document contains the class which handles telegram's interactions."""
-from base import helpCommand, matcher
+from base import helpCommand, matcher, tagHelper
 import random
 import math
 
@@ -25,9 +25,7 @@ class Handler():
     def answer(self, answer):
         """Answer to a matching command."""
         answers = answer.get('answer')
-        if len(answers) is 1:
-            return answers[0]
-        number = math.floor(random.random() * len())
+        number = math.floor(random.random() * (len(answer) - 1))
         return answers[number]
 
     def checkMessage(self, message, sender):
@@ -37,12 +35,17 @@ class Handler():
                 if matcher.Matcher.matches(candidateMessage, message,
                                            self.botname):
                     answer = self.answer(candidateMessage)
-                    return self.parse(answer, sender)
+                    return self.parse(answer, candidateMessage, message,
+                                      sender)
         return None
 
-    def parse(self, answer, sender):
-        """Parse the message, finding the {} tags."""
-        """Currently only {user} is supported."""
+    def parse(self, answer, messageTemplate, message, sender):
+        """Parse the message, finding the {} tags.
+
+        Currently only {user} is supported.
+        """
+        tagContent = tagHelper.getTagsContent(message, messageTemplate)
+        answer = tagHelper.replaceTags(answer, tagContent)
         answer = answer.replace("{user}", sender)
         return answer
 
