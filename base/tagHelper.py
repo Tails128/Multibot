@@ -82,3 +82,12 @@ def getSyntax(string, tags):
         answer = answer.replace(tag, "{{}}")
     answer = answer.split("{{}}")
     return answer
+
+
+def replaceTags(string, tagContent):
+    """Replace the content of a string with the tagContent."""
+    answer = string
+    for key in tagContent:
+        tag = "{" + key + "}"
+        answer = answer.replace(tag, tagContent[key])
+    return answer

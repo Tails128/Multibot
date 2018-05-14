@@ -35,3 +35,11 @@ def test_getTagsContent():
     string = "This is a test."
     answer = {"tag": "test."}
     assert tagHelper.getTagsContent(string, stringWithTags) == answer
+
+
+def test_replaceTags():
+    """Test if the tags are replaced correctly."""
+    string = "try {1} replace {2}"
+    tags = {"1": "to", "2": "this"}
+    answer = "try to replace this"
+    assert answer == tagHelper.replaceTags(string, tags)
