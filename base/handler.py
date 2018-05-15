@@ -2,6 +2,7 @@
 from base import helpCommand, matcher, tagHelper
 import random
 import math
+import sys
 
 
 class Handler():
@@ -54,6 +55,11 @@ class Handler():
         chat_id = message['chat']['id']
         fullMessage = message['text']
         sender = message['from']['username']
+
+        # notify the user that the message is received
+        print("Got message: " + fullMessage + "\nFrom: " + sender)
+        sys.stdout.flush()
+
         # sendHour = message['date']
         answer = self.checkMessage(fullMessage, sender)
         if answer is not None:
