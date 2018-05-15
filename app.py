@@ -21,7 +21,7 @@ class manager():
         manager.messageHandler.handle(msg, manager.bot)
 
 
-# handle notice the user that the process has begun
+# notice the user that the process has begun
 print("setting up the bot...")
 sys.stdout.flush()
 
