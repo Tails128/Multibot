@@ -18,6 +18,11 @@ class Handler():
 
     def setMessages(self, newMessages):
         """Set the internal variable which stores the interactions."""
+        for priority in newMessages:
+            for message in priority:
+                if 'strictMatch' not in message:
+                    message['strictMatch'] = False
+
         self.messages = newMessages
         self.handlerHelpCommand = helpCommand.HelpCommand()
         # TODO : fill extra fields not set in messages
@@ -26,7 +31,7 @@ class Handler():
     def answer(self, answer):
         """Answer to a matching command."""
         answers = answer.get('answer')
-        number = math.floor(random.random() * (len(answer) - 1))
+        number = math.floor(random.random() * (len(answer['answer']) - 1))
         return answers[number]
 
     def checkMessage(self, message, sender):

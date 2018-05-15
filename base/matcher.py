@@ -83,7 +83,7 @@ class Matcher():
     @staticmethod
     def matches(candidate, message, botname):
         """Check if the candidate and the message match (trigger only)."""
-        # if trigger = /command, check only if the message contains the command
+        candidate = Matcher.sanitize(candidate)
 
         # if trigger's empty, delegate to fullMatch
         if candidate['trigger'] == '':
@@ -95,6 +95,11 @@ class Matcher():
             if len(splittedCandidate) > 1:
                 return False
             splittedMessage = message.split(' ')
+
+            if not candidate['strictMatch']:
+                splittedMessage[0] = splittedMessage[0].lower()
+                splittedCandidate[0] = splittedCandidate[0].lower()
+
             if splittedMessage[0] == splittedCandidate[0]:
                 postMessage = message.lstrip(candidate.get('trigger'))
                 postMessage = postMessage.lstrip(" ")
@@ -104,8 +109,16 @@ class Matcher():
         # if trigger is botname, check if the message contains the botname,
         # then delegate to fullMatch
         elif candidate['trigger'] == 'botname':
-            splittedMessage = message.split(' ')
-            if botname in splittedMessage:
+            newMessage = message
+            newBotName = botname
+
+            if not candidate['strictMatch']:
+                newBotName = newBotName.lower()
+                newMessage = newMessage.lower()
+
+            newMessage = newMessage.split(' ')
+
+            if newBotName in newMessage:
                 newSplit = message.split(botname)
                 if(len(newSplit) is not 2):
                     return False
@@ -116,3 +129,11 @@ class Matcher():
 
         # default return false
         return False
+
+    @staticmethod
+    def sanitize(candidate):
+        """Fill the item with the default optional data if it's not set."""
+        if 'strictMatch' not in candidate:
+            candidate['strictMatch'] = False
+
+        return candidate
