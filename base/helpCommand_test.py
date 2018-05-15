@@ -27,7 +27,6 @@ def test_getHelpCommand():
     commands = [[{"trigger": "/test",
                  "command_description": "the test works!"}]]
     testHelpCommand = helpCommand.HelpCommand()
-    print(testHelpCommand.commands)
     testHelpCommand.registerCommands(commands)
     helpCommandString = testHelpCommand.getHelpCommand()
     assert helpCommandString == "*test*\nthe test works!\n\n"
