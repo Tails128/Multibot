@@ -11,6 +11,11 @@ class Handler():
     messages = []
     botname = ''
     handlerHelpCommand = ''
+    __logger = None
+
+    def setLogger(self, logger):
+        """Set the default logger."""
+        self.__logger = logger
 
     def setBotname(self, newName):
         """Set the internal variable which stores the bot's name."""
@@ -62,8 +67,15 @@ class Handler():
         sender = message['from']['username']
 
         # notify the user that the message is received
-        print("Got message: " + fullMessage + "\nFrom: " + sender)
-        sys.stdout.flush()
+        logString = "Got message: " + fullMessage + "\nFrom: " + sender
+
+        if self.__logger is None:
+            # if no default logger is set, print
+            print(logString)
+            sys.stdout.flush()
+        else:
+            # else use the default logger
+            self.__logger.log(logString)
 
         # sendHour = message['date']
         answer = self.checkMessage(fullMessage, sender)
