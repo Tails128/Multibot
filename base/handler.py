@@ -1,5 +1,7 @@
 """This document contains the class which handles telegram's interactions."""
-from base import helpCommand, matcher, tagHelper
+from base.tagHelper import TagHelper
+from base.helpCommand import HelpCommand
+from base.matcher import Matcher
 import random
 import math
 import sys
@@ -29,7 +31,7 @@ class Handler():
                     message['strictMatch'] = False
 
         self.messages = newMessages
-        self.handlerHelpCommand = helpCommand.HelpCommand()
+        self.handlerHelpCommand = HelpCommand()
         # TODO : fill extra fields not set in messages
         self.handlerHelpCommand.registerCommands(self.messages)
 
@@ -43,8 +45,8 @@ class Handler():
         """Check if the message just sent is a command."""
         for messageList in self.messages:
             for candidateMessage in messageList:
-                if matcher.Matcher.matches(candidateMessage, message,
-                                           self.botname):
+                if Matcher.matches(candidateMessage, message,
+                                   self.botname):
                     answer = self.answer(candidateMessage)
                     return self.parse(answer, candidateMessage, message,
                                       sender)
@@ -55,8 +57,8 @@ class Handler():
 
         Currently only {user} is supported.
         """
-        tagContent = tagHelper.getTagsContent(message, messageTemplate)
-        answer = tagHelper.replaceTags(answer, tagContent)
+        tagContent = TagHelper.getTagsContent(message, messageTemplate)
+        answer = TagHelper.replaceTags(answer, tagContent)
         answer = answer.replace("{user}", sender)
         return answer
 

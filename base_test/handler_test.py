@@ -2,12 +2,13 @@
 import sys
 import os
 sys.path.append(os.getcwd())
-from base import handler, matcher
+from base.handler import Handler
+from base.matcher import Matcher
 
 
 def test_setBotname():
     """Test the setBotname function."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     bName = "Test"
     testHandler.setBotname(bName)
     assert(testHandler.botname == bName)
@@ -15,7 +16,7 @@ def test_setBotname():
 
 def test_setMessages():
     """Test the setMessages function."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     messages = [[{'trigger': '/botname'}]]
     testHandler.setMessages(messages)
     assert testHandler.messages == messages
@@ -24,7 +25,7 @@ def test_setMessages():
 
 def test_botname_right_message():
     """Test the reaction of the bot once a matching message is sent."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname'}]]
     testHandler.setBotname(bName)
@@ -33,12 +34,12 @@ def test_botname_right_message():
 
     for messageList in testHandler.messages:
         for candidateMessage in messageList:
-            assert matcher.Matcher.matches(candidateMessage, message, bName)
+            assert Matcher.matches(candidateMessage, message, bName)
 
 
 def test_botname_right_message_get_answer():
     """Test the answer to a right message."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
     testHandler.setBotname(bName)
@@ -49,7 +50,7 @@ def test_botname_right_message_get_answer():
 
 def test_botname_wrong_message():
     """Test the reaction of the bot once a NOT matching message is sent."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname'}]]
     testHandler.setBotname(bName)
@@ -58,13 +59,13 @@ def test_botname_wrong_message():
 
     for messageList in testHandler.messages:
         for candidateMessage in messageList:
-            assert matcher.Matcher.matches(candidateMessage,
+            assert Matcher.matches(candidateMessage,
                                            message, bName) is False
 
 
 def test_parse():
     """Test the if the parse works as intended, replacing tags."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     sender = "Tester"
     answer = 'hello, {user}! You tagged: {tag}'
     message = "yourself"
@@ -79,7 +80,7 @@ def test_parse():
 
 def test_botname_wrong_message_get_answer():
     """Test the answer to a wrong message."""
-    testHandler = handler.Handler()
+    testHandler = Handler()
     bName = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
     testHandler.setBotname(bName)

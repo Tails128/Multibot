@@ -1,5 +1,5 @@
 """This class checks if the given message and the given message item match."""
-from base import tagHelper
+from base.tagHelper import TagHelper
 
 
 class Matcher():
@@ -49,7 +49,7 @@ class Matcher():
         match is a loose match and must handle the {tags}.
         """
         for element in array:
-            tags = tagHelper.getTags(element)
+            tags = TagHelper.getTags(element)
             if len(tags) is 0:
                 if element in string:
                     return True
@@ -74,7 +74,7 @@ class Matcher():
                 cleanString = cleanString.replace(stringChunk, "{{}}")
 
         total = len(tags)
-        splittedTags = len(tagHelper.getTagsContent(string, textWithTags))
+        splittedTags = len(TagHelper.getTagsContent(string, textWithTags))
 
         if splittedTags == total:
             return True
