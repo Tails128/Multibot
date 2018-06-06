@@ -2,8 +2,8 @@
 import sys
 import os
 import random
-sys.path.append(os.getcwd() + "/logging")
-from logger import Logger
+sys.path.append(os.getcwd() + "/bot_logging")
+from bot_logging.logger import Logger
 
 
 def test_makeLogLine():
@@ -22,8 +22,7 @@ def test_stdout(capsys):
     Logger.enableConsoleLog()
     Logger.log(testString)
     captured = capsys.readouterr()
-    expected = Logger.makeLogLine(Logger._lastLogData,
-                                         testString) + "\n"
+    expected = Logger.makeLogLine(Logger._lastLogData, testString) + "\n"
     assert expected == captured.out
 
 
