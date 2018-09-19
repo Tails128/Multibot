@@ -1,5 +1,17 @@
 """This document contains the class which splits the custom settings."""
 
+def sanitize(array):
+    """Sanitize the entries."""
+    result = []
+    for item in array:
+        if 'answer' not in item:
+            item['answer'] = []
+        elif isinstance(item.get('answer'), str):
+            arr = [item.get('answer')]
+            item['answer'] = arr
+        result.append(item)
+    return result
+
 
 class Splitter():
     """The splitter class splits and classifies the custom JSON settings."""
@@ -10,7 +22,7 @@ class Splitter():
 
         sortedPriorities = sorted(values)
         for key in sortedPriorities:
-            sanitizedValues = self.sanitize(values[key])
+            sanitizedValues = sanitize(values[key])
             result.append(sanitizedValues)
 
         return result
@@ -29,18 +41,6 @@ class Splitter():
             holder[priority].append(arrItem)
 
         return self.sortPriorities(holder)
-
-    def sanitize(self, array):
-        """Sanitize the entries."""
-        result = []
-        for item in array:
-            if 'answer' not in item:
-                item['answer'] = []
-            elif type(item.get('answer')) is str:
-                arr = [item.get('answer')]
-                item['answer'] = arr
-            result.append(item)
-        return result
 
 # def describeCommands(values):
 # TODO:
