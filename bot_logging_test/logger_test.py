@@ -29,10 +29,10 @@ def test_stdout(capsys):
 def test_fileout():
     """Test the logging on the log file."""
     testString = "This is a test"
-    dir = os.getcwd()
-    fileName = dir + "\\testLog"
+    currentDir = os.getcwd()
+    fileName = currentDir + "\\testLog"
     while(os.path.exists(fileName)):
-        fileName = dir + random.random() + "\\testLog"
+        fileName = currentDir + random.random() + "\\testLog"
     Logger.setFileName(fileName)
     Logger.disableConsoleLog()
     Logger.enableFileLog()

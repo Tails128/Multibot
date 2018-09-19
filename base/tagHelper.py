@@ -68,10 +68,10 @@ class TagHelper():
         guide = guide.split("{{}}")
 
         answer = {}
-        for index in range(0, len(extracted)):
+        for index, value in enumerate(extracted):
             if guide[index] is not '':
                 obj_name = guide[index].replace("{", "").replace("}", "")
-                answer[obj_name] = extracted[index]
+                answer[obj_name] = value
         return answer
 
     @staticmethod

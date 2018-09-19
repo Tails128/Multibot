@@ -16,7 +16,6 @@ def test_registerCommands():
 
 def test_cleanCommands():
     """Test the cleanCommands function."""
-    """Test the registerCommands function."""
     commands = [[{"trigger": "/test",
                  "command_description": "the test works!"}]]
     testHelpCommand = HelpCommand()

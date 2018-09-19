@@ -15,7 +15,7 @@ class Logger():
     @staticmethod
     def setFileName(name):
         """Set the logfile path."""
-        if(type(name) is str):
+        if isinstance(name, str):
             Logger._filename = name
         else:
             Logger.log("Logfile path is not a str instance!")
