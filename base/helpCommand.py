@@ -11,16 +11,27 @@ class HelpCommand():
         self.cleanCommands()
         for priorityList in commands:
             for item in priorityList:
-                if item.get('trigger') == "/help" or item.get('trigger') == '':
-                    continue
-                elif item.get('trigger')[0] == '/':
-                    tempCommand = item.get('trigger').split('/')[1]
-                    command = '*' + tempCommand + '*'
-                    description = ''
-                    if 'command_description' in item:
-                        description = "\n" + item.get('command_description')
-                    description += "\n\n"
-                    self.commands.append(command + description)
+                addValidCommand(item)
+
+    def addValidCommand(self, commandItem):
+        """Add valid commands to the list of commands to display with /help"""
+        trigger = item.get("trigger");
+        isTriggerEmptyOrHelp = trigger == "/help" or trigger == '';
+        isCommandValid = not isTriggerEmptyOrHelp and trigger[0] == '/';
+
+        if isCommandValid:
+            self.commands.append(parseCommandItem(commandItem))
+
+
+    def parseCommandItem(self, commandItem):
+        """Parse a command item."""
+        commandName = commandItem.get('trigger').split('/')[1]
+        command = '*' + commandName + '*'
+        description = ''
+        if 'command_description' in commandItem:
+            description = "\n" + commandItem.get('command_description')
+        description += "\n\n"
+        return command + description;
 
     def cleanCommands(self):
         """Clean the commands variable."""

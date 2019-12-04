@@ -13,6 +13,34 @@ def test_registerCommands():
     testHelpCommand.registerCommands(commands)
     assert testHelpCommand.commands == ["*test*\nthe test works!\n\n"]
 
+def test_addValidCommand_valid():
+    """It should add valid commands."""
+    commandItem = {"trigger": "/test", "command_description": "the test works!"};
+    testHelpCommand = HelpCommand();
+    testHelpCommand.addValidCommand(commandItem);
+    assert testHelpCommand.commands == ["*test*\nthe test works!\n\n"]
+
+def test_addValidCommand_invalid():
+    """It should not add commands which have a trigger not starting with '/'."""
+    commandItem = {"trigger": "test", "command_description": "the test works!"};
+    testHelpCommand = HelpCommand();
+    testHelpCommand.addValidCommand(commandItem);
+    assert testHelpCommand.commands == []
+
+def test_addValidCommand_invalid():
+    """It should not add commands which have no trigger."""
+    commandItem = {"/help": "test", "command_description": "the test works!"};
+    testHelpCommand = HelpCommand();
+    testHelpCommand.addValidCommand(commandItem);
+    assert testHelpCommand.commands == []
+
+def test_parseCommandItem():
+    """It should parse correctly a command item."""
+    commandItem = {"trigger": "/test", "command_description": "the test works!"};
+    testHelpCommand = HelpCommand();
+    result = testHelpCommand.addValidCommand(commandItem);
+    assert result == "*test*\nthe test works!\n\n";
+
 
 def test_cleanCommands():
     """Test the cleanCommands function."""
