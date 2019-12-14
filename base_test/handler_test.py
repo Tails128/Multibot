@@ -26,11 +26,10 @@ def test_setMessages():
 def test_botname_right_message():
     """Test the reaction of the bot once a matching message is sent."""
     testHandler = Handler()
-    bName = "Test"
+    bName = message = "Test"
     messages = [[{'trigger': 'botname'}]]
     testHandler.setBotname(bName)
     testHandler.setMessages(messages)
-    message = "Test"
 
     for messageList in testHandler.messages:
         for candidateMessage in messageList:
