@@ -248,8 +248,10 @@ def test_matching_with_tags():
     post_message = "?"
     candidate = {'trigger': 'botname', 'trigger_extra': [post_message],
                  'trigger_pre': [pre_message]}
+
     not_tagged_pre = pre_message.replace("{tag}", "tag")
     not_tagged_pre = not_tagged_pre.replace("{you}", "thou")
     message = not_tagged_pre + " noise " + botName
     message += " noise " + post_message + " noise"
+
     assert matcher.Matcher.matches(candidate, message, botName)
