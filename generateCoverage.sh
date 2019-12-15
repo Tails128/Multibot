@@ -1,0 +1,1 @@
+coverage run -m --source=. pytest && coverage report && coverage html
