@@ -84,50 +84,58 @@ class Matcher():
     def matches(candidate, message, botname):
         """Check if the candidate and the message match (trigger only)."""
         candidate = Matcher.sanitize(candidate)
+        trigger = candidate['trigger']
 
-        # if trigger's empty, delegate to fullMatch
-        if candidate['trigger'] == '':
+        isTriggerEmpty = trigger == '' or trigger is None
+        if isTriggerEmpty:
             return Matcher.__fullMatch(candidate, message, message, message)
 
-        # if trigger's a /command, try to match it
-        elif candidate.get('trigger')[0] == '/':
-            splittedCandidate = candidate['trigger'].split(' ')
-            if len(splittedCandidate) > 1:
-                return False
-            splittedMessage = message.split(' ')
+        isTriggerSlashCommand = trigger[0] == '/'
+        if isTriggerSlashCommand:
+            return Matcher.matchSlashCommand(candidate, message)
 
-            if not candidate['strictMatch']:
-                splittedMessage[0] = splittedMessage[0].lower()
-                splittedCandidate[0] = splittedCandidate[0].lower()
-
-            if splittedMessage[0] == splittedCandidate[0]:
-                postMessage = message.lstrip(candidate.get('trigger'))
-                postMessage = postMessage.lstrip(" ")
-                return Matcher.__fullMatch(candidate, message, '', postMessage)
-            return False
-
-        # if trigger is botname, check if the message contains the botname,
-        # then delegate to fullMatch
-        elif candidate['trigger'] == 'botname':
-            newMessage = message
-            newBotName = botname
-
-            if not candidate['strictMatch']:
-                newBotName = newBotName.lower()
-                newMessage = newMessage.lower()
-
-            newMessage = newMessage.split(' ')
-
-            if newBotName in newMessage:
-                newSplit = message.split(botname)
-                if(len(newSplit) is not 2):
-                    return False
-                else:
-                    return Matcher.__fullMatch(candidate, message, newSplit[0],
-                                               newSplit[1])
-            return False
+        isTriggerBotName = trigger == 'botname'
+        if isTriggerBotName:
+            return Matcher.matchBotName(candidate, message, botname)
 
         # default return false
+        return False
+
+    @staticmethod
+    def matchSlashCommand(candidate, message):
+        splittedCandidate = candidate['trigger'].split(' ')
+        if len(splittedCandidate) > 1:
+            return False
+        splittedMessage = message.split(' ')
+
+        if not candidate['strictMatch']:
+            splittedMessage[0] = splittedMessage[0].lower()
+            splittedCandidate[0] = splittedCandidate[0].lower()
+
+        if splittedMessage[0] == splittedCandidate[0]:
+            postMessage = message.lstrip(candidate.get('trigger'))
+            postMessage = postMessage.lstrip(" ")
+            return Matcher.__fullMatch(candidate, message, '', postMessage)
+
+        return False
+
+    @staticmethod
+    def matchBotName(candidate, message, botname):
+        newMessage = message
+        newBotName = botname
+
+        if not candidate['strictMatch']:
+            newBotName = newBotName.lower()
+            newMessage = newMessage.lower()
+
+        newMessage = newMessage.split(' ')
+
+        if newBotName in newMessage:
+            newSplit = message.split(botname)
+            if(len(newSplit) is not 2):
+                return False
+            else:
+                return Matcher.__fullMatch(candidate, message, newSplit[0], newSplit[1])
         return False
 
     @staticmethod
