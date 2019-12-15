@@ -1,20 +1,17 @@
 """Test splitter class."""
-import sys
-import os
-sys.path.append(os.getcwd())
 from base import splitter
 
 
-def test_sortPriorities():
+def test_sort_priorities():
     """Test the sortPriorities function."""
-    testSplitter = splitter.Splitter()
+    test_splitter = splitter.Splitter()
     values = {}
     values[3] = [{'priority': 3}]
     values[2] = [{'priority': 2}, {'priority': 2}]
     values[6] = [{'priority': 6}]
     values[1] = [{'priority': 1}]
 
-    result = testSplitter.sort_priorities(values)
+    result = test_splitter.sort_priorities(values)
     assert result == [[{'priority': 1, 'answer': []}],
                       [{'priority': 2, 'answer': []},
                        {'priority': 2, 'answer': []}],
@@ -22,9 +19,9 @@ def test_sortPriorities():
                       [{'priority': 6, 'answer': []}]]
 
 
-def test_SplitByPriorities():
+def test_split_by_priorities():
     """Test the splitByPriorities function."""
-    testSplitter = splitter.Splitter()
+    test_splitter = splitter.Splitter()
     values = []
     values.append({'priority': 3})
     values.append({'priority': 2})
@@ -32,7 +29,7 @@ def test_SplitByPriorities():
     values.append({'priority': 1})
     values.append({'priority': 2})
 
-    result = testSplitter.split_by_priority(values)
+    result = test_splitter.split_by_priority(values)
     assert result == [[{'priority': 1, 'answer': []}],
                       [{'priority': 2, 'answer': []},
                        {'priority': 2, 'answer': []}],

@@ -1,12 +1,10 @@
 """Test the custom logger."""
-import sys
 import os
 import random
-sys.path.append(os.getcwd() + "/bot_logging")
 from bot_logging.logger import Logger
 
 
-def test_makeLogLine():
+def test_make_log_line():
     """Test the linemaker function."""
     data = "Test result"
     string = "Success!"
@@ -17,32 +15,34 @@ def test_makeLogLine():
 
 def test_stdout(capsys):
     """Test the logging on the standard output."""
-    testString = "This is a test"
+    test_string = "This is a test"
     Logger.disable_file_log()
     Logger.enable_console_log()
-    Logger.log(testString)
+    Logger.log(test_string)
     captured = capsys.readouterr()
-    expected = Logger.make_log_line(Logger._lastLogData, testString) + "\n"
+    # pylint:disable=protected-access
+    expected = Logger.make_log_line(Logger._lastLogData, test_string) + "\n"
     assert expected == captured.out
 
 
 def test_fileout():
     """Test the logging on the log file."""
-    testString = "This is a test"
-    currentDir = os.getcwd()
-    fileName = currentDir + "\\testLog"
-    while(os.path.exists(fileName)):
-        fileName = currentDir + random.random() + "\\testLog"
-    Logger.set_file_name(fileName)
+    test_string = "This is a test"
+    current_dir = os.getcwd()
+    file_name = current_dir + "\\testLog"
+    while os.path.exists(file_name):
+        file_name = current_dir + random.random() + "\\testLog"
+    Logger.set_file_name(file_name)
     Logger.disable_console_log()
     Logger.enable_file_log()
-    Logger.log(testString)
+    Logger.log(test_string)
+    # pylint:disable=protected-access
     expected = Logger.make_log_line(Logger._lastLogData,
-                                         testString) + "\n"
+                                    test_string) + "\n"
 
-    assert os.path.exists(fileName)
-    with open(fileName, "r") as file:
+    assert os.path.exists(file_name)
+    with open(file_name, "r") as file:
         assert sum(1 for line in file) == 1
-    with open(fileName, "r") as file:
+    with open(file_name, "r") as file:
         assert file.readline() == expected
-    os.remove(fileName)
+    os.remove(file_name)
