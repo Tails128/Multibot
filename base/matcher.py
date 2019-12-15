@@ -1,67 +1,69 @@
 """This class checks if the given message and the given message item match."""
-from base.tagHelper import TagHelper
 import re
+from base.tag_helper import TagHelper
 
 
 class Matcher():
     """Matcher for message items."""
 
     @staticmethod
-    def __fullMatch(candidate, message, preMessage, postMessage):
+    def __full_match(candidate, pre_message, post_message):
         """Check if the message and the candidate match more deeply."""
 
         # If message has no pre-trigger conditions confirm the match for
         # pre-trigger conditions.
-        hasPre = Matcher.__evaluatePrePost(preMessage, candidate.get("trigger_pre"))
-        hasPost = Matcher.__evaluatePrePost(postMessage, candidate.get("trigger_extra"))
+        has_pre = Matcher.__evaluate_pre_post(pre_message, candidate.get("trigger_pre"))
+        has_post = Matcher.__evaluate_pre_post(post_message, candidate.get("trigger_extra"))
 
-        return hasPre and hasPost
+        return has_pre and has_post
 
     @staticmethod
-    def __evaluatePrePost(message, valuesToCheck):
-        """Check if the pre-post element matches something in the array."""
-        if valuesToCheck is None or len(valuesToCheck) <= 0:
+    def __evaluate_pre_post(message, values_to_check):
+        """Check if the pre and post elements matches something in the array."""
+        if values_to_check is None or len(values_to_check) <= 0:
             return True
-        elif valuesToCheck is not None:
-            return Matcher.__checkInArray(valuesToCheck, message)
+        
+        if values_to_check is not None:
+            return Matcher.__check_in_array(values_to_check, message)
+        
         return False
 
     @staticmethod
-    def __checkInArray(message, valuesToCheck):
+    def __check_in_array(values_to_check, message):
         """Check if string matches one of the pre-post elements in the array.
 
         Check if the given string matches one of the ones in the array. The
         match is a loose match and must handle the {tags}.
         """
-        for element in message:
+        for element in values_to_check:
 
-            tags = TagHelper.getTags(element)
-            hasSimpleMatch = len(tags) is 0 and element in valuesToCheck
-            if hasSimpleMatch:
+            tags = TagHelper.get_tags(element)
+            has_simple_match = len(tags) == 0 and element in message
+            if has_simple_match:
                 return True
 
-            hasCorrectStructure = Matcher.__allNonTagComponentsMatch(element, valuesToCheck)
-            if hasCorrectStructure:
+            has_correct_structure = Matcher.__all_non_tag_components_match(element, message)
+            if has_correct_structure:
                 return True
 
         return False
 
     @staticmethod
-    def __allNonTagComponentsMatch(templateMessage, compiledMessage):
+    def __all_non_tag_components_match(template_message, compiled_message):
         """Check if the structure of the message match... excluding the tags, ofc!"""
-        allTags = len(TagHelper.getTags(templateMessage))
-        stringChunks = re.split("{.+}", templateMessage)
+        all_tags = len(TagHelper.get_tags(template_message))
+        string_chunks = re.split("{.+}", template_message)
 
-        for stringChunk in stringChunks:
-            if stringChunk not in compiledMessage:
+        for string_chunk in string_chunks:
+            if string_chunk not in compiled_message:
                 return False
-            else:
-                compiledMessage = compiledMessage.replace(stringChunk, "{{}}")
 
-        numberOfMatchingTags = len(TagHelper.getTagsContent(compiledMessage, templateMessage))
-        areAllTagsPresent = numberOfMatchingTags is allTags
+            compiled_message = compiled_message.replace(string_chunk, "{{}}")
 
-        return areAllTagsPresent
+        number_of_matching_tags = len(TagHelper.get_tags_content(compiled_message, template_message))
+        are_all_tags_present = number_of_matching_tags is all_tags
+
+        return are_all_tags_present
 
     @staticmethod
     def matches(candidate, message, botname):
@@ -69,55 +71,55 @@ class Matcher():
         candidate = Matcher.sanitize(candidate)
         trigger = candidate['trigger']
 
-        isTriggerEmpty = trigger == '' or trigger is None
-        if isTriggerEmpty:
-            return Matcher.__fullMatch(candidate, message, message, message)
+        is_trigger_empty = trigger == '' or trigger is None
+        if is_trigger_empty:
+            return Matcher.__full_match(candidate, message, message)
 
-        isTriggerSlashCommand = trigger[0] == '/'
-        if isTriggerSlashCommand:
-            return Matcher.matchesSlashCommand(candidate, message)
+        is_trigger_slash_command = trigger[0] == '/'
+        if is_trigger_slash_command:
+            return Matcher.matches_slash_command(candidate, message)
 
-        isTriggerBotName = trigger == 'botname'
-        if isTriggerBotName:
-            return Matcher.matchesBotName(candidate, message, botname)
+        is_trigger_bot_name = trigger == 'botname'
+        if is_trigger_bot_name:
+            return Matcher.matches_bot_name(candidate, message, botname)
 
         # default return false
         return False
 
     @staticmethod
-    def matchesSlashCommand(candidate, message):
+    def matches_slash_command(candidate, message):
         """Check if the message matches the given /command."""
-        splittedCandidate = candidate['trigger'].split(' ')
+        splitted_candidate = candidate['trigger'].split(' ')
 
-        if len(splittedCandidate) > 1:
+        if len(splitted_candidate) > 1:
             return False
-        splittedMessage = message.split(' ')
+        splitted_message = message.split(' ')
 
-        isCaseSensitive = candidate['strictMatch']
-        if not isCaseSensitive:
-            splittedMessage[0] = splittedMessage[0].lower()
-            splittedCandidate[0] = splittedCandidate[0].lower()
+        is_case_sensitive = candidate['strictMatch']
+        if not is_case_sensitive:
+            splitted_message[0] = splitted_message[0].lower()
+            splitted_candidate[0] = splitted_candidate[0].lower()
 
-        if splittedMessage[0] == splittedCandidate[0]:
-            postMessage = message.lstrip(candidate.get('trigger'))
-            postMessage = postMessage.lstrip(" ")
-            return Matcher.__fullMatch(candidate, message, '', postMessage)
+        if splitted_message[0] == splitted_candidate[0]:
+            post_message = message.lstrip(candidate.get('trigger'))
+            post_message = post_message.lstrip(" ")
+            return Matcher.__full_match(candidate, '', post_message)
 
         return False
 
     @staticmethod
-    def matchesBotName(candidate, message, botname):
+    def matches_bot_name(candidate, message, botname):
         """Check if the message matches the given botname command."""
-        isCaseSensitive = candidate['strictMatch']
-        newMessage = message if isCaseSensitive else message.lower()
-        newBotName = botname if isCaseSensitive else botname.lower()
+        is_case_sensitive = candidate['strictMatch']
+        new_message = message if is_case_sensitive else message.lower()
+        new_bot_name = botname if is_case_sensitive else botname.lower()
 
-        newMessage = newMessage.split(' ')
+        new_message = new_message.split(' ')
 
-        if newBotName in newMessage:
-            newSplit = message.split(botname)
-            if(len(newSplit) is 2):
-                return Matcher.__fullMatch(candidate, message, newSplit[0], newSplit[1])
+        if new_bot_name in new_message:
+            new_split = message.split(botname)
+            if len(new_split) == 2:
+                return Matcher.__full_match(candidate, new_split[0], new_split[1])
 
         return False
 

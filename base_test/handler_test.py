@@ -1,88 +1,85 @@
 """Test handler class."""
-import sys
-import os
-sys.path.append(os.getcwd())
 from base.handler import Handler
 from base.matcher import Matcher
 
 
-def test_setBotname():
+def test_set_botname():
     """Test the setBotname function."""
-    testHandler = Handler()
-    bName = "Test"
-    testHandler.setBotname(bName)
-    assert(testHandler.botname == bName)
+    test_handler = Handler()
+    bot_name = "Test"
+    test_handler.set_botname(bot_name)
+    assert test_handler.botname == bot_name
 
 
-def test_setMessages():
+def test_set_messages():
     """Test the setMessages function."""
-    testHandler = Handler()
+    test_handler = Handler()
     messages = [[{'trigger': '/botname'}]]
-    testHandler.setMessages(messages)
-    assert testHandler.messages == messages
-    assert testHandler.handlerHelpCommand.getHelpCommand() == "*botname*\n\n"
+    test_handler.set_messages(messages)
+    assert test_handler.messages == messages
+    assert test_handler.handler_help_command.get_help_command() == "*botname*\n\n"
 
 
 def test_botname_right_message():
     """Test the reaction of the bot once a matching message is sent."""
-    testHandler = Handler()
-    bName = message = "Test"
+    test_handler = Handler()
+    bot_name = message = "Test"
     messages = [[{'trigger': 'botname'}]]
-    testHandler.setBotname(bName)
-    testHandler.setMessages(messages)
+    test_handler.set_botname(bot_name)
+    test_handler.set_messages(messages)
 
-    for messageList in testHandler.messages:
-        for candidateMessage in messageList:
-            assert Matcher.matches(candidateMessage, message, bName)
+    for message_list in test_handler.messages:
+        for candidate_message in message_list:
+            assert Matcher.matches(candidate_message, message, bot_name)
 
 
 def test_botname_right_message_get_answer():
     """Test the answer to a right message."""
-    testHandler = Handler()
-    bName = "Test"
+    test_handler = Handler()
+    bot_name = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
-    testHandler.setBotname(bName)
-    testHandler.setMessages(messages)
+    test_handler.set_botname(bot_name)
+    test_handler.set_messages(messages)
 
-    assert testHandler.checkMessage(bName, '') is 'success!'
+    assert test_handler.check_message(bot_name, '') == 'success!'
 
 
 def test_botname_wrong_message():
     """Test the reaction of the bot once a NOT matching message is sent."""
-    testHandler = Handler()
-    bName = "Test"
+    test_handler = Handler()
+    bot_name = "Test"
     messages = [[{'trigger': 'botname'}]]
-    testHandler.setBotname(bName)
-    testHandler.setMessages(messages)
+    test_handler.set_botname(bot_name)
+    test_handler.set_messages(messages)
     message = 'Testsssssss'
 
-    for messageList in testHandler.messages:
-        for candidateMessage in messageList:
-            assert Matcher.matches(candidateMessage,
-                                           message, bName) is False
+    for message_list in test_handler.messages:
+        for candidate_message in message_list:
+            assert Matcher.matches(candidate_message,
+                                   message, bot_name) is False
 
 
 def test_parse():
     """Test the if the parse works as intended, replacing tags."""
-    testHandler = Handler()
+    test_handler = Handler()
     sender = "Tester"
     answer = 'hello, {user}! You tagged: {tag}'
     message = "yourself"
-    messageTemplate = "{tag}"
+    message_template = "{tag}"
     sender = "tester"
     result = "hello, tester! You tagged: yourself"
 
-    answer = testHandler.parse(answer, messageTemplate, message, sender)
+    answer = test_handler.parse(answer, message_template, message, sender)
 
-    assert(result == answer)
+    assert result == answer
 
 
 def test_botname_wrong_message_get_answer():
     """Test the answer to a wrong message."""
-    testHandler = Handler()
-    bName = "Test"
+    test_handler = Handler()
+    bot_name = "Test"
     messages = [[{'trigger': 'botname', 'answer': ['success!']}]]
-    testHandler.setBotname(bName)
-    testHandler.setMessages(messages)
+    test_handler.set_botname(bot_name)
+    test_handler.set_messages(messages)
 
-    assert testHandler.checkMessage(bName + 'sssss', '') is None
+    assert test_handler.check_message(bot_name + 'sssss', '') is None

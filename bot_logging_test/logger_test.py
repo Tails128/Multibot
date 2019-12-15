@@ -10,7 +10,7 @@ def test_makeLogLine():
     """Test the linemaker function."""
     data = "Test result"
     string = "Success!"
-    line = Logger.makeLogLine(data, string)
+    line = Logger.make_log_line(data, string)
     expected = data + ": " + string
     assert line == expected
 
@@ -18,11 +18,11 @@ def test_makeLogLine():
 def test_stdout(capsys):
     """Test the logging on the standard output."""
     testString = "This is a test"
-    Logger.disableFileLog()
-    Logger.enableConsoleLog()
+    Logger.disable_file_log()
+    Logger.enable_console_log()
     Logger.log(testString)
     captured = capsys.readouterr()
-    expected = Logger.makeLogLine(Logger._lastLogData, testString) + "\n"
+    expected = Logger.make_log_line(Logger._lastLogData, testString) + "\n"
     assert expected == captured.out
 
 
@@ -33,11 +33,11 @@ def test_fileout():
     fileName = currentDir + "\\testLog"
     while(os.path.exists(fileName)):
         fileName = currentDir + random.random() + "\\testLog"
-    Logger.setFileName(fileName)
-    Logger.disableConsoleLog()
-    Logger.enableFileLog()
+    Logger.set_file_name(fileName)
+    Logger.disable_console_log()
+    Logger.enable_file_log()
     Logger.log(testString)
-    expected = Logger.makeLogLine(Logger._lastLogData,
+    expected = Logger.make_log_line(Logger._lastLogData,
                                          testString) + "\n"
 
     assert os.path.exists(fileName)

@@ -1,8 +1,5 @@
 """Test matcher class."""
-import sys
-import os
-sys.path.append(os.getcwd())
-from base import matcher
+from base.matcher import Matcher
 
 
 def test_simple_botname_matches():
@@ -15,10 +12,10 @@ def test_simple_botname_matches():
     candidate = {'trigger': 'botname'}
 
     message = botName + " noise"
-    assert matcher.Matcher.matches(candidate, message, botName)
+    assert Matcher.matches(candidate, message, botName)
 
     message = botName + "sss"
-    assert not matcher.Matcher.matches(candidate, message, botName)
+    assert not Matcher.matches(candidate, message, botName)
 
 
 def test_pre_botname_matches():
@@ -33,9 +30,9 @@ def test_pre_botname_matches():
 
     for token in tokens:
         message = token + " noise " + botName
-        assert matcher.Matcher.matches(candidate, message, botName)
+        assert Matcher.matches(candidate, message, botName)
 
-    assert not matcher.Matcher.matches(candidate, botName, botName)
+    assert not Matcher.matches(candidate, botName, botName)
 
 
 def test_post_botname_matches():
@@ -50,9 +47,9 @@ def test_post_botname_matches():
 
     for token in tokens:
         message = botName + " noise " + token
-        assert matcher.Matcher.matches(candidate, message, botName)
+        assert Matcher.matches(candidate, message, botName)
 
-    assert not matcher.Matcher.matches(candidate, botName, botName)
+    assert not Matcher.matches(candidate, botName, botName)
 
 
 def test_full_botname_matches():
@@ -69,10 +66,10 @@ def test_full_botname_matches():
     for pre in tokens:
         for post in tokens:
             message = pre + " noise " + botName + " noise " + post
-            assert matcher.Matcher.matches(candidate, message, botName)
+            assert Matcher.matches(candidate, message, botName)
 
     message = botName
-    assert not matcher.Matcher.matches(candidate, message, botName)
+    assert not Matcher.matches(candidate, message, botName)
 
 
 def test_bad_command_ignore():
@@ -84,7 +81,7 @@ def test_bad_command_ignore():
     trigger = "/comm and"
     candidate = {'trigger': trigger}
     message = trigger
-    assert not matcher.Matcher.matches(candidate, message, botName)
+    assert not Matcher.matches(candidate, message, botName)
 
 
 def test_simple_command_match():
@@ -98,10 +95,10 @@ def test_simple_command_match():
     candidate = {'trigger': trigger}
 
     message = trigger + " do_stuff right_now"
-    assert matcher.Matcher.matches(candidate, message, botName)
+    assert Matcher.matches(candidate, message, botName)
 
     message = trigger + "sss"
-    assert not matcher.Matcher.matches(candidate, message, botName)
+    assert not Matcher.matches(candidate, message, botName)
 
 
 def test_pre_command_ignored():
@@ -118,7 +115,7 @@ def test_pre_command_ignored():
     candidate = {'trigger': trigger, 'trigger_pre': tokens}
     for token in tokens:
         message = token + " noise " + trigger
-        assert not matcher.Matcher.matches(candidate, message, botName)
+        assert not Matcher.matches(candidate, message, botName)
 
 
 def test_post_command_matches():
@@ -133,10 +130,10 @@ def test_post_command_matches():
     candidate = {'trigger': trigger, 'trigger_extra': tokens}
     for token in tokens:
         message = trigger + " noise " + token
-        assert matcher.Matcher.matches(candidate, message, botName)
+        assert Matcher.matches(candidate, message, botName)
 
         message = trigger + token
-        assert not matcher.Matcher.matches(candidate, message, botName)
+        assert not Matcher.matches(candidate, message, botName)
 
 
 def test_full_command_ignored():
@@ -156,7 +153,7 @@ def test_full_command_ignored():
     for pre in tokens:
         for post in tokens:
             message = pre + " noise " + trigger + " noise " + post
-            assert not matcher.Matcher.matches(candidate, message, botName)
+            assert not Matcher.matches(candidate, message, botName)
 
 
 def test_simple_empty_match():
@@ -168,7 +165,7 @@ def test_simple_empty_match():
     botName = "test"
     candidate = {'trigger': ''}
     message = "any input should trigger this."
-    assert (matcher.Matcher.matches(candidate, message, botName))
+    assert (Matcher.matches(candidate, message, botName))
 
 
 def test_pre_empty_matches():
@@ -183,9 +180,9 @@ def test_pre_empty_matches():
 
     for token in tokens:
         message = token + " noise "
-        assert matcher.Matcher.matches(candidate, message, botName)
+        assert Matcher.matches(candidate, message, botName)
 
-    assert not matcher.Matcher.matches(candidate, botName, botName)
+    assert not Matcher.matches(candidate, botName, botName)
 
 
 def test_post_empty_matches():
@@ -200,9 +197,9 @@ def test_post_empty_matches():
 
     for token in tokens:
         message = token + " noise "
-        assert matcher.Matcher.matches(candidate, message, botName)
+        assert Matcher.matches(candidate, message, botName)
 
-    assert not matcher.Matcher.matches(candidate, botName, botName)
+    assert not Matcher.matches(candidate, botName, botName)
 
 
 def test_full_empty_matches():
@@ -219,10 +216,10 @@ def test_full_empty_matches():
     for pre in tokens:
         for post in tokens:
             message = pre + " noise " + " noise " + post
-            assert matcher.Matcher.matches(candidate, message, botName)
+            assert Matcher.matches(candidate, message, botName)
 
     message = botName
-    assert not matcher.Matcher.matches(candidate, message, botName)
+    assert not Matcher.matches(candidate, message, botName)
 
 
 def test_bad_trigger_ignored():
@@ -234,7 +231,7 @@ def test_bad_trigger_ignored():
     botName = "test"
     candidate = {'trigger': 'test'}
     message = "test"
-    assert not (matcher.Matcher.matches(candidate, message, botName))
+    assert not (Matcher.matches(candidate, message, botName))
 
 
 def test_matching_with_tags():
@@ -254,4 +251,4 @@ def test_matching_with_tags():
     message = not_tagged_pre + " noise " + botName
     message += " noise " + post_message + " noise"
 
-    assert matcher.Matcher.matches(candidate, message, botName)
+    assert Matcher.matches(candidate, message, botName)

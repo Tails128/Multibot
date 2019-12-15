@@ -16,31 +16,29 @@ def sanitize(array):
 class Splitter():
     """The splitter class splits and classifies the custom JSON settings."""
 
-    def sortPriorities(self, values):
+    @staticmethod
+    def sort_priorities(values):
         """Sort the [values] and places them in an array."""
         result = []
 
-        sortedPriorities = sorted(values)
-        for key in sortedPriorities:
-            sanitizedValues = sanitize(values[key])
-            result.append(sanitizedValues)
+        sorted_priorities = sorted(values)
+        for key in sorted_priorities:
+            sanitized_values = sanitize(values[key])
+            result.append(sanitized_values)
 
         return result
 
-    def splitByPriority(self, array):
+    def split_by_priority(self, array):
         """Split and order the custom settings by priority."""
         holder = {}
 
         # each item gets saved in 'holder' at position 'priority'
         # priorities get saved in the set 'priorities' in order to get an
         # ordered and compact array from holder, which is a dictionary
-        for arrItem in array:
-            priority = arrItem['priority']
+        for array_item in array:
+            priority = array_item['priority']
             if priority not in holder:
                 holder[priority] = []
-            holder[priority].append(arrItem)
+            holder[priority].append(array_item)
 
-        return self.sortPriorities(holder)
-
-# def describeCommands(values):
-# TODO:
+        return self.sort_priorities(holder)

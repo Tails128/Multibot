@@ -5,7 +5,7 @@ class TagHelper():
     """This class helps with tags recognizement and elaboration."""
 
     @staticmethod
-    def isValid(string):
+    def is_valid(string):
         """Check if the tag is valid.
 
         A tag is considered not valid if it contains unescaped
@@ -14,23 +14,23 @@ class TagHelper():
         if "}" not in string or "{" not in string:
             return False
 
-        totalOpen = string.count('{')
-        totalClose = string.count('}')
-        answer = totalOpen - totalClose
-        if answer is not 0:
+        total_open = string.count('{')
+        total_close = string.count('}')
+        answer = total_open - total_close
+        if answer != 0:
             return False
         return True
 
     @staticmethod
-    def getTags(string):
+    def get_tags(string):
         """Get the tags in a string."""
         answer = []
 
-        if not TagHelper.isValid(string):
+        if not TagHelper.is_valid(string):
             return answer
 
-        tempAnswer = string.split("}")
-        for candidate in tempAnswer:
+        temp_answer = string.split("}")
+        for candidate in temp_answer:
             candidate = candidate.strip(" ")
             if "{" not in candidate:
                 continue
@@ -39,29 +39,29 @@ class TagHelper():
         return answer
 
     @staticmethod
-    def removeTags(string):
+    def remove_tags(string):
         """Return the given string, but without the tags."""
         answer = string
-        tags = TagHelper.getTags(answer)
+        tags = TagHelper.get_tags(answer)
         for tag in tags:
             remove = " {" + tag + "}"
             answer = answer.replace(remove, "")
         return answer
 
     @staticmethod
-    def getTagsContent(message, templateMessage):
+    def get_tags_content(message, template_message):
         """Extract tags from a string, using stringWithTags for the syntax."""
-        partialTags = TagHelper.getTags(templateMessage)
-        if len(partialTags) is 0:
+        partial_tags = TagHelper.get_tags(template_message)
+        if len(partial_tags) == 0:
             return {}
         tags = []
-        for tag in partialTags:
+        for tag in partial_tags:
             tags.append("{" + tag + "}")
         extracted = message
-        guide = templateMessage
-        syntax = TagHelper.getSyntax(templateMessage, tags)
+        guide = template_message
+        syntax = TagHelper.get_syntax(template_message, tags)
         for element in syntax:
-            if element is not '':
+            if element != '':
                 extracted = extracted.replace(element, "{{}}")
                 guide = guide.replace(element, "{{}}")
         extracted = extracted.split("{{}}")
@@ -69,15 +69,15 @@ class TagHelper():
 
         answer = {}
         for index, value in enumerate(extracted):
-            if guide[index] is not '':
+            if guide[index] != '':
                 obj_name = guide[index].replace("{", "").replace("}", "")
                 answer[obj_name] = value
         return answer
 
     @staticmethod
-    def getSyntax(string, tags):
+    def get_syntax(string, tags):
         """Get the syntax of a string once the tags are removed."""
-        if len(tags) is 0:
+        if len(tags) == 0:
             return string
 
         answer = string
@@ -87,10 +87,10 @@ class TagHelper():
         return answer
 
     @staticmethod
-    def replaceTags(string, tagContent):
+    def replace_tags(string, tag_content):
         """Replace the content of a string with the tagContent."""
         answer = string
-        for key in tagContent:
+        for key in tag_content:
             tag = "{" + key + "}"
-            answer = answer.replace(tag, tagContent[key])
+            answer = answer.replace(tag, tag_content[key])
         return answer
