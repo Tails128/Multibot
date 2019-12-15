@@ -49,17 +49,17 @@ class TagHelper():
         return answer
 
     @staticmethod
-    def getTagsContent(string, stringWithTags):
+    def getTagsContent(message, templateMessage):
         """Extract tags from a string, using stringWithTags for the syntax."""
-        partialTags = TagHelper.getTags(stringWithTags)
+        partialTags = TagHelper.getTags(templateMessage)
         if len(partialTags) is 0:
             return {}
         tags = []
         for tag in partialTags:
             tags.append("{" + tag + "}")
-        extracted = string
-        guide = stringWithTags
-        syntax = TagHelper.getSyntax(stringWithTags, tags)
+        extracted = message
+        guide = templateMessage
+        syntax = TagHelper.getSyntax(templateMessage, tags)
         for element in syntax:
             if element is not '':
                 extracted = extracted.replace(element, "{{}}")
