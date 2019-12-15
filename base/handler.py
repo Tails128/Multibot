@@ -39,7 +39,7 @@ class Handler():
         """Answer to a matching command."""
         answers = answer.get('answer')
         number = math.floor(random.random() * (len(answer['answer']) - 1))
-        return answers[number]
+        return answers[int(number)]
 
     def checkMessage(self, message, sender):
         """Check if the message just sent is a command."""
