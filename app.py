@@ -16,7 +16,6 @@ Logger.enable_console_log()
 # start the bot
 BOT_MANAGER = BotManager()
 BOT_MANAGER.init(Logger, 'config.json', 'triggers.json')
-BotManager.start_looping()
 
 # loop to catch all the messages
 while 1:
