@@ -33,7 +33,7 @@ class HelpCommand():
         if 'command_description' in commandItem:
             description = "\n" + commandItem.get('command_description')
         description += "\n\n"
-        return command + description;
+        return command + description
 
     def cleanCommands(self):
         """Clean the commands variable."""
