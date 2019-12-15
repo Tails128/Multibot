@@ -132,9 +132,7 @@ class Matcher():
 
         if newBotName in newMessage:
             newSplit = message.split(botname)
-            if(len(newSplit) is not 2):
-                return False
-            else:
+            if(len(newSplit) is 2):
                 return Matcher.__fullMatch(candidate, message, newSplit[0], newSplit[1])
         return False
 
